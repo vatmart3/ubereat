@@ -65,7 +65,7 @@ export async function uploadPhoto(draftId: string, photo: DraftPhoto): Promise<D
  */
 export async function submitDraft(
   draft: Draft,
-  opts: { restaurantName: string; clientCapturedAt: string; offline: boolean; onProgress?: (label: string) => void },
+  opts: { restaurantName: string; clientCapturedAt: string; offline: boolean; geo?: { lat: number; lng: number; accuracy?: number } | null; onProgress?: (label: string) => void },
 ): Promise<SealResult> {
   const slots = Object.keys(draft.photos) as Slot[];
   for (const slot of slots) {
@@ -98,7 +98,7 @@ export async function submitDraft(
       pickup_code: draft.pickup_code.trim() || null,
       client_captured_at: opts.clientCapturedAt,
       offline: opts.offline,
-      geo: null,
+      geo: opts.geo ?? null,
       photos: slots.map((slot) => ({ slot, captured_at: draft.photos[slot]!.captured_at })),
       has_signature: Boolean(draft.signature),
       confirm_closed: draft.confirm_closed,

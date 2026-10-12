@@ -60,6 +60,7 @@ export function Wizard({ restaurantName, restaurantCity, retentionDays, operator
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<WizardResult | null>(null);
   const [recent, setRecent] = useState<Courier[]>(recentCouriers);
+  const geo = useRef<{ lat: number; lng: number; accuracy?: number } | null>(null);
   const draftRef = useRef(draft);
   draftRef.current = draft;
 
@@ -70,6 +71,20 @@ export function Wizard({ restaurantName, restaurantCity, retentionDays, operator
       else setRecent(JSON.parse(localStorage.getItem("remis-recent-couriers") ?? "[]") as Courier[]);
     } catch {}
   }, [recentCouriers]);
+
+  // Position du comptoir : uniquement si le restaurant l'a activée (consentement explicite dans les réglages).
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("remis-geo") !== "on" || !navigator.geolocation) return;
+    } catch {
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (p) => (geo.current = { lat: Number(p.coords.latitude.toFixed(5)), lng: Number(p.coords.longitude.toFixed(5)), accuracy: Math.round(p.coords.accuracy) }),
+      () => undefined,
+      { maximumAge: 10 * 60_000, timeout: 8000 },
+    );
+  }, []);
 
   // Brouillon : restauré si l'app a été fermée en cours de remise.
   useEffect(() => {
@@ -171,7 +186,7 @@ export function Wizard({ restaurantName, restaurantCity, retentionDays, operator
     setError(null);
     const clientCapturedAt = new Date().toISOString();
     try {
-      const sealResult = await submitDraft(d, { restaurantName, clientCapturedAt, offline: false, onProgress: setProgress });
+      const sealResult = await submitDraft(d, { restaurantName, clientCapturedAt, offline: false, geo: geo.current, onProgress: setProgress });
       await clearDraft();
       setResult({ kind: "sealed", seal: sealResult, draft: d });
       setPhase("done");

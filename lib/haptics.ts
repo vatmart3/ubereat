@@ -11,6 +11,9 @@ const PATTERNS: Record<HapticKind, number | number[]> = {
 
 export function haptic(kind: HapticKind = "tap") {
   if (typeof navigator === "undefined" || typeof navigator.vibrate !== "function") return;
+  // Le navigateur refuse (et journalise) toute vibration avant un premier geste de l'utilisateur.
+  const activation = (navigator as Navigator & { userActivation?: { hasBeenActive: boolean } }).userActivation;
+  if (activation && !activation.hasBeenActive) return;
   try {
     if (localStorage.getItem("remis-haptics") === "off") return;
   } catch {

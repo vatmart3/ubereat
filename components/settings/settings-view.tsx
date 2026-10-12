@@ -24,10 +24,12 @@ export function SettingsView({ restaurant, members, me, isOwner, demo }: { resta
   const [pinFor, setPinFor] = useState<Member | null>(null);
   const [pin, setPin] = useState("");
   const [haptics, setHaptics] = useState(true);
+  const [geo, setGeo] = useState(false);
 
   useEffect(() => {
     try {
       setHaptics(localStorage.getItem("remis-haptics") !== "off");
+      setGeo(localStorage.getItem("remis-geo") === "on");
     } catch {}
   }, []);
 
@@ -151,6 +153,28 @@ export function SettingsView({ restaurant, members, me, isOwner, demo }: { resta
             className={`h-10 w-20 rounded-[3px] border-[1.5px] font-mono text-[12px] font-semibold uppercase ${haptics ? "border-ink bg-ink text-bg" : "border-line text-muted"}`}
           >
             {haptics ? "Oui" : "Non"}
+          </button>
+        </div>
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <span className="text-[15px]">
+            Joindre la position du comptoir
+            <span className="block text-[12.5px] text-muted">Facultatif · position du téléphone du restaurant, jamais celle du livreur</span>
+          </span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={geo}
+            onClick={() => {
+              const next = !geo;
+              setGeo(next);
+              try {
+                localStorage.setItem("remis-geo", next ? "on" : "off");
+              } catch {}
+              if (next) navigator.geolocation?.getCurrentPosition(() => undefined, () => undefined);
+            }}
+            className={`h-10 w-20 shrink-0 rounded-[3px] border-[1.5px] font-mono text-[12px] font-semibold uppercase ${geo ? "border-ink bg-ink text-bg" : "border-line text-muted"}`}
+          >
+            {geo ? "Oui" : "Non"}
           </button>
         </div>
         <p className="mt-3 text-[13px] text-muted">Ce téléphone est rattaché à {restaurant.name} : l&apos;équipe se connecte avec son PIN, sans e-mail. Le cadenas en haut verrouille la session.</p>

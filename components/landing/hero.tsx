@@ -92,7 +92,7 @@ export function Hero() {
           )}
           {!reduce ? (
             <div className="pointer-events-none absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-[2px] bg-ink px-3 py-1.5 font-mono text-[11.5px] uppercase tracking-[0.14em] text-bg">
-              <span className="text-accent">{caption + 1}/4</span> {CAPTIONS[caption]}
+              <span className="text-[#8A93FF]">{caption + 1}/4</span> {CAPTIONS[caption]}
             </div>
           ) : null}
         </div>
