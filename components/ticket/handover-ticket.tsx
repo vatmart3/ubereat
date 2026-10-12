@@ -83,7 +83,7 @@ export function HandoverTicket({ data, stamp, pending, className = "" }: { data:
       ) : null}
       <hr className="ticket-rule" />
       <div className="text-center text-[10.5px] uppercase tracking-[0.16em] text-paper-muted">Preuve horodatée et vérifiable</div>
-      {stamp ? <div className="pointer-events-none absolute right-3 top-[38%]">{stamp}</div> : null}
+      {stamp ? <div className="pointer-events-none absolute right-2 top-[64px]">{stamp}</div> : null}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { AuthFrame } from "@/components/auth/auth-frame";
 import { OnboardingForm } from "@/components/auth/onboarding-form";
 
 export const metadata: Metadata = { title: "Créer mon espace", robots: { index: false } };
+export const dynamic = "force-dynamic";
 
 export default async function OnboardingPage() {
   const store = getStore();

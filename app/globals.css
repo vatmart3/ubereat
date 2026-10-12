@@ -103,6 +103,7 @@ html {
 }
 
 body {
+  overflow-x: clip; /* filet de sécurité : jamais de dézoom mobile dû à un débordement horizontal */
   background-color: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);

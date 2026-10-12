@@ -39,7 +39,9 @@ export function InkStamp({
           className="absolute left-1/2 top-1/2 h-24 w-40 rounded-[50%]"
           style={{
             background: `radial-gradient(closest-side, color-mix(in srgb, ${color ?? "#2F3BD1"} 35%, transparent), transparent)`,
-            animation: `ink-ripple 700ms cubic-bezier(.2,.7,.3,1) ${delay + 0.16}s both`,
+            opacity: 0,
+            transform: "translate(-50%, -50%) scale(0.4)",
+            animation: `ink-ripple 700ms cubic-bezier(.2,.7,.3,1) ${delay + 0.16}s backwards`,
           }}
         />
       ) : null}

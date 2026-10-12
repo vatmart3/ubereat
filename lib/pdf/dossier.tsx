@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text -- <Image> de @react-pdf/renderer : pas d'attribut alt dans un PDF. */
 import { Document, Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import { describeEvent } from "../dossier";
 import { disputeLabel, PLATFORM_META, SLOT_META, STATUS_META, VEHICLE_META } from "../platforms";

@@ -15,7 +15,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
   const stats = await store.getStats(actor);
   return (
-    <div className="min-h-dvh pb-28">
+    <div className="min-h-dvh pb-40">
       <TopBar restaurantName={actor.restaurant.name} operatorName={actor.displayName} />
       <SyncManager restaurantName={actor.restaurant.name} />
       <div className="mx-auto max-w-md px-4">{children}</div>

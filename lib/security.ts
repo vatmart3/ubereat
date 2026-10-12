@@ -1,8 +1,6 @@
 import "server-only";
-import { createHmac, randomBytes, scrypt as scryptCb, timingSafeEqual } from "node:crypto";
-import { promisify } from "node:util";
-
-const scrypt = promisify(scryptCb) as (pwd: string, salt: Buffer, keylen: number, opts: { N: number; r: number; p: number }) => Promise<Buffer>;
+import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+export { hashPin, isValidPin, verifyPin } from "./pin";
 
 const URL_SAFE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
@@ -38,28 +36,6 @@ export function verifySigned(signed: string | undefined | null): string | null {
   const given = Buffer.from(signed.slice(idx + 1));
   if (expected.length !== given.length || !timingSafeEqual(expected, given)) return null;
   return value;
-}
-
-const PIN_PARAMS = { N: 16384, r: 8, p: 1 };
-
-export function isValidPin(pin: string): boolean {
-  return /^\d{4}$/.test(pin);
-}
-
-export async function hashPin(pin: string): Promise<string> {
-  if (!isValidPin(pin)) throw new Error("Le code PIN doit comporter 4 chiffres.");
-  const salt = randomBytes(16);
-  const hash = await scrypt(pin, salt, 32, PIN_PARAMS);
-  return `scrypt$${PIN_PARAMS.N}$${salt.toString("base64url")}$${hash.toString("base64url")}`;
-}
-
-export async function verifyPin(pin: string, stored: string | null | undefined): Promise<boolean> {
-  if (!stored || !isValidPin(pin)) return false;
-  const [algo, n, saltB64, hashB64] = stored.split("$");
-  if (algo !== "scrypt" || !n || !saltB64 || !hashB64) return false;
-  const expected = Buffer.from(hashB64, "base64url");
-  const actual = await scrypt(pin, Buffer.from(saltB64, "base64url"), expected.length, { ...PIN_PARAMS, N: Number(n) });
-  return actual.length === expected.length && timingSafeEqual(actual, expected);
 }
 
 export const PIN_MAX_ATTEMPTS = 5;

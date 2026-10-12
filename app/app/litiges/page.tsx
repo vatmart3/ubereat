@@ -54,7 +54,7 @@ export default async function DisputesPage() {
           <ul className="space-y-2">
             {closed.map((h) => (
               <li key={h.id}>
-                <Link href={`/app/remises/${h.id}`} className="stub flex items-center justify-between py-3 pl-[92px] pr-3">
+                <Link href={`/app/remises/${h.id}`} className="flex items-center justify-between rounded-[3px] border border-line bg-raise px-3 py-3">
                   <span className="font-display text-[24px] font-black uppercase">#{h.order_ref}</span>
                   <StatusBadge status={h.status} />
                 </Link>

@@ -255,7 +255,7 @@ export class MemoryStore implements DataStore {
       .filter((c) => c.restaurant_id === actor.restaurant.id)
       .sort((a, b) => b.last_seen_at.localeCompare(a.last_seen_at))
       .slice(0, limit)
-      .map(({ restaurant_id: _r, ...c }) => c);
+      .map((c) => ({ id: c.id, display_name: c.display_name, vehicle: c.vehicle, last_code: c.last_code, last_seen_at: c.last_seen_at }));
   }
 
   async handoverExists(id: string) {

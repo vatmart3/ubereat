@@ -1,7 +1,7 @@
 "use client";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { haptic } from "@/lib/haptics";
 import { processPhoto } from "@/lib/image/stamp";
 import { clearDraft, enqueue, loadDraft, saveDraft } from "@/lib/offline/store";
@@ -98,12 +98,15 @@ export function Wizard({ restaurantName, restaurantCity, retentionDays, operator
     setDraft((d) => ({ ...d, ...patch }));
   }, []);
 
-  const valid = [
-    Boolean(draft.platform && draft.order_ref.trim()),
-    Object.keys(draft.photos).length > 0 && !Object.values(processing).some(Boolean),
-    Boolean(draft.courier_name.trim() && draft.vehicle),
-    draft.confirm_closed,
-  ];
+  const valid = useMemo(
+    () => [
+      Boolean(draft.platform && draft.order_ref.trim()),
+      Object.keys(draft.photos).length > 0 && !Object.values(processing).some(Boolean),
+      Boolean(draft.courier_name.trim() && draft.vehicle),
+      draft.confirm_closed,
+    ],
+    [draft.platform, draft.order_ref, draft.photos, draft.courier_name, draft.vehicle, draft.confirm_closed, processing],
+  );
   const step = draft.step;
 
   const go = useCallback((to: number) => {

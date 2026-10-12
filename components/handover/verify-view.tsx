@@ -84,7 +84,7 @@ export function VerifyView({ id, orderRef }: { id: string; orderRef: string }) {
       <h1 className="display mt-1 text-[56px]">Vérifier</h1>
       <p className="mt-1 text-[15px] text-muted">On relit la remise et chaque fichier, on recalcule l&apos;empreinte SHA-256 ici, dans votre navigateur, et on la compare à celle du scellé.</p>
 
-      <div className="relative mt-5 flex min-h-[170px] items-center justify-center border-y-[1.5px] border-ink py-6" aria-live="polite" data-testid="verdict">
+      <div className="relative mt-5 flex min-h-[170px] items-center justify-center overflow-hidden border-y-[1.5px] border-ink px-2 py-6" aria-live="polite" data-testid="verdict">
         <AnimatePresence mode="wait">
           {running && !verdict ? (
             <motion.span key="run" className="kicker blink" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -99,7 +99,7 @@ export function VerifyView({ id, orderRef }: { id: string; orderRef: string }) {
               animate={{ scale: 1, opacity: 0.95, rotate: -6 }}
               transition={{ type: "spring", stiffness: 520, damping: 18 }}
             >
-              <span className="text-[44px] leading-none">{verdict.intact ? "Preuve intacte" : "Preuve modifiée"}</span>
+              <span className="text-center text-[clamp(30px,10vw,44px)] leading-none">{verdict.intact ? "Preuve intacte" : "Preuve modifiée"}</span>
             </motion.div>
           ) : null}
         </AnimatePresence>
