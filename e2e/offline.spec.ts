@@ -5,17 +5,14 @@ test("hors ligne : la remise part en file d'attente puis est scellée au retour 
   const order = `OFF${Date.now().toString().slice(-5)}`;
   await page.goto("/app/nouvelle");
   await page.getByTestId("platform-justeat").click();
-  await page.keyboard.type(order);
-  await page.keyboard.press("Enter");
+  await page.getByTestId("order-ref").fill(order);
 
   await context.setOffline(true);
-  await page.getByTestId("input-sac").setInputFiles(PHOTO);
+  await page.getByTestId("photo-input").setInputFiles(PHOTO);
   await expect(page.getByTestId("thumb-sac")).toBeVisible();
-  await page.getByTestId("next-step").click();
+  await page.getByTestId("other-courier").click();
   await page.getByTestId("courier-name").fill("nadia k");
   await page.getByTestId("vehicle-velo").click();
-  await page.getByTestId("next-step").click();
-  await page.getByTestId("confirm-closed").click();
 
   const hold = page.getByTestId("hold-to-seal");
   const box = (await hold.boundingBox())!;

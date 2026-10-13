@@ -3,21 +3,25 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { haptic } from "@/lib/haptics";
 
 /**
- * « Maintenir pour sceller » : appui long de 0,9 s, remplissage de gauche à droite.
+ * « Maintenir pour sceller » : appui long (0,7 s par défaut), remplissage de gauche à droite.
  * Relâcher avant la fin annule (évite les scellés accidentels). Clavier : maintenir Espace ou Entrée.
  */
 export function HoldButton({
   onComplete,
   disabled,
-  duration = 900,
+  duration = 700,
   label = "Maintenir pour sceller",
   doneLabel = "Scellé",
+  hint = "Appui long · 1 s",
+  disabledHint = "Complétez la remise",
 }: {
   onComplete: () => void;
   disabled?: boolean;
   duration?: number;
   label?: string;
   doneLabel?: string;
+  hint?: string;
+  disabledHint?: string;
 }) {
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
@@ -100,8 +104,8 @@ export function HoldButton({
       <span className="relative z-10 flex items-center justify-center gap-3 font-display text-[26px] font-black uppercase tracking-wide">
         <span style={{ color: progress > 0.5 ? "var(--accent-ink)" : undefined }}>{done ? doneLabel : label}</span>
       </span>
-      <span aria-hidden className="absolute bottom-1.5 left-1/2 z-10 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.2em] opacity-60" style={{ color: progress > 0.5 ? "var(--accent-ink)" : undefined }}>
-        {disabled ? "Cochez la case ci-dessus" : "Appui long · 1 s"}
+      <span aria-hidden className="absolute inset-x-3 bottom-1.5 z-10 truncate text-center font-mono text-[10px] uppercase tracking-[0.1em] opacity-70" style={{ color: progress > 0.5 ? "var(--accent-ink)" : undefined }}>
+        {disabled ? disabledHint : hint}
       </span>
     </button>
   );

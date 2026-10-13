@@ -2,7 +2,7 @@
 
 **La preuve de remise restaurant ↔ livreur.** Au moment où le livreur récupère la commande, le restaurant prend 1 à 3 photos, note la commande et le livreur, le fait signer au doigt, puis **scelle** la remise : elle devient horodatée côté serveur, verrouillée et vérifiable par une empreinte SHA-256. En cas de réclamation (« non reçu », « article manquant », « sac ouvert »), le dossier de contestation se génère en un clic. Le livreur reçoit son propre reçu par QR code, sans compte.
 
-> Une remise complète prend **moins de 30 secondes et 8 taps** (mesuré par le test Playwright : ~5 s en automatisé).
+> **Remise express, un seul écran :** plateforme mémorisée → n° de commande → photo du sac → un tap sur le livreur → maintenir pour sceller. **4 à 5 taps, ~2 s** en automatisé (test Playwright). Montant, articles, code et signature restent disponibles, repliés.
 
 ---
 
@@ -19,7 +19,7 @@ Sans variables Supabase, l'app tourne en **mode démo** : données en mémoire, 
 | --- | --- |
 | Landing de vente (hero 3D) | `/` |
 | Registre | `/app` |
-| Nouvelle remise (4 étapes) | `/app/nouvelle` |
+| Nouvelle remise (écran express) | `/app/nouvelle` |
 | Fiche · Vérifier · Litige | `/app/remises/[id]`, `/app/remises/[id]/verifier` |
 | Litiges | `/app/litiges` |
 | Réglages (équipe, PIN, rétention, thème) | `/app/reglages` |
@@ -132,7 +132,7 @@ TEST_DATABASE_URL=postgres://postgres:postgres@localhost:5432/remis_test npm tes
 npm run test:e2e              # Playwright (build + start en mode démo) — 360 px et 430 px
 ```
 
-Les tests E2E couvrent : une remise complète **< 30 s et ≤ 10 taps** (8 mesurés), le reçu ouvert sans compte via son lien, le brouillon restauré, « Vérifier » intacte puis « Simuler une fraude », le litige (dossier texte, PDF, résolution), le badge Litiges, la connexion par PIN, et le **hors ligne** (file d'attente puis scellé au retour du réseau).
+Les tests E2E couvrent : une remise express **< 30 s et ≤ 5 taps** (≈ 2 s mesurées), le scellé bloqué tant qu'il manque une information, le reçu ouvert sans compte via son lien, le brouillon restauré, « Vérifier » intacte puis « Simuler une fraude », le litige (dossier texte, PDF, résolution), le badge Litiges, la connexion par PIN, et le **hors ligne** (file d'attente puis scellé au retour du réseau).
 
 Lighthouse mobile (build de production, mode démo) : landing **94 / 100 / 100 / 100** (performance, accessibilité, bonnes pratiques, SEO). Registre, fiche, parcours de remise, reçu et comptoir : performance 92 à 98, accessibilité et bonnes pratiques à 100. La 3D n'est chargée qu'au premier geste ou après 4 s ; une affiche SVG la remplace avant chargement et si l'utilisateur demande moins d'animations.
 

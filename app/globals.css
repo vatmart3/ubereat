@@ -150,10 +150,13 @@ label {
   touch-action: manipulation;
 }
 
-input,
-textarea,
-select {
-  font-size: 16px; /* évite le zoom iOS */
+/* Dans une couche « base » : les utilitaires Tailwind (text-[40px]…) gardent la priorité. */
+@layer base {
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* évite le zoom iOS */
+  }
 }
 
 :focus-visible {

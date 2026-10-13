@@ -11,7 +11,7 @@ import { ReceiptSheet } from "@/components/handover/receipt-sheet";
 
 export type WizardResult = { kind: "sealed"; seal: SealResult; draft: Draft } | { kind: "queued"; draft: Draft };
 
-const PRINT_MS = 1700;
+const PRINT_MS = 700;
 
 export function Confirmation({ result, restaurantName, restaurantCity, onNext }: { result: WizardResult; restaurantName: string; restaurantCity: string; onNext: () => void }) {
   const reduce = useReducedMotion();
@@ -33,7 +33,7 @@ export function Confirmation({ result, restaurantName, restaurantCity, onNext }:
         <div className="relative -mt-1 overflow-hidden px-2 pb-6">
           <div
             className={reduce ? "" : "printing"}
-            style={{ "--print-duration": `${PRINT_MS}ms`, "--print-steps": 22 } as React.CSSProperties}
+            style={{ "--print-duration": `${PRINT_MS}ms`, "--print-steps": 12 } as React.CSSProperties}
           >
             <HandoverTicket
               pending={!sealed}
